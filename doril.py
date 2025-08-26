@@ -17,6 +17,7 @@ nome_texto_pos_emoji = "doril_pos_emoji.txt"
 nome_texto_pos_stopwords = "doril_pos_stopwords.json"
 nome_texto_pos_pontuacao = "doril_pos_pontuacao.json"
 nome_texto_pos_espacos_em_branco = "doril_pos_espacos_em_branco.json"
+nome_texto_pos_girias = "doril_pos_girias.json"
 
 # SIMBOLOS
 simbolos_html = r'<.*?>'
@@ -33,7 +34,55 @@ simbolos_emoji = re.compile(
     flags=re.UNICODE
 )
 simbolos_pontuacao = r'[^a-zA-Z0-9\sàáâãéêíóôõúüçÀÁÂÃÉÊÍÓÔÕÚÜÇ]'
-
+girias = {
+    "vc": "você",
+    "cê": "você",
+    "vcs": "vocês",
+    "pq": "porque",
+    "q": "que",
+    "cd": "cadê",
+    "kd": "cadê",
+    "blz": "beleza",
+    "vlw": "valeu",
+    "flw": "falou",
+    "msg": "mensagem",
+    "zap": "whatsapp",
+    "mano": "amigo",
+    "parça": "amigo",
+    "bro": "irmão",
+    "mt": "muito",
+    "mto": "muito",
+    "td": "tudo",
+    "fds": "fim de semana",
+    "tmj": "tamo junto",
+    "slc": "se liga",
+    "ctz": "certeza",
+    "sqn": "só que não",
+    "kkk": "risada",
+    "rs": "risada",
+    "lol": "risada",
+    "nois": "nós",
+    "tpw": "tipo",
+    "aq": "aqui",
+    "aki": "aqui",
+    "hj": "hoje",
+    "dps": "depois",
+    "aki": "aqui",
+    "bjs": "beijos",
+    "abs": "abraços",
+    "pfv": "por favor",
+    "pls": "por favor",
+    "obg": "obrigado",
+    "vlwflw": "valeu falou",
+    "sq": "sei que",
+    "miga": "amiga",
+    "cringe": "vergonhoso",
+    "xau": "tchau",
+    "partiu": "vamos",
+    "top": "legal",
+    "gata": "garota",
+    "gato": "garoto",
+}
 
 #############################################################################
 # ABRE ARQUIVO PRINCIPAL
@@ -131,4 +180,18 @@ with open(nome_texto_pos_espacos_em_branco, "w", encoding="utf-8") as arquivo:
     json.dump(tokens_sem_espacos, arquivo, ensure_ascii=False, indent=4)
     arquivo.close()
 
+#############################################################################
+# ABRE ARQUIVO SEM ESPAÇOS EM BRANCO
+with open(nome_texto_pos_espacos_em_branco, 'r', encoding='utf-8') as arquivo:
+    conteudo = json.load(arquivo)
+    arquivo.close()
+
+# Substituir palavras usadas em chat por suas formas normais;
+tokens_corrigidos = [girias.get(token, token) for token in conteudo]
+
+# ARQUIVO SEM GIRIAS
+with open(nome_texto_pos_girias, "w", encoding="utf-8") as arquivo:
+    json.dump(tokens_corrigidos, arquivo, ensure_ascii=False, indent=4)
+    arquivo.close()
+    
 #############################################################################
