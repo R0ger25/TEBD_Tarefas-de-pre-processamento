@@ -111,8 +111,11 @@ for token in conteudo:
     if token:
         tokens_sem_pontuacao.append(token)
 
-# ARQUIVO SEM OS PONTOS
+# ARQUIVO SEM AS PONTUAÇÕES
 with open(nome_texto_pos_pontuacao, "w", encoding="utf-8") as arquivo:
     json.dump(tokens_sem_pontuacao, arquivo, ensure_ascii=False, indent=4)
     print(arquivo)
     arquivo.close()
+    
+#############################################################################
+# ABRE ARQUIVO SEM AS PONTUAÇÕES E CARACTERES ESPECIAIS
