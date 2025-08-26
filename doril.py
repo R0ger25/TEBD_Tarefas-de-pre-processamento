@@ -3,6 +3,7 @@ import nltk
 import json
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
+from num2words import num2words
 
 # Baixar os pacotes necessários (só na primeira vez)
 # nltk.download('stopwords')
@@ -18,6 +19,7 @@ nome_texto_pos_stopwords = "doril_pos_stopwords.json"
 nome_texto_pos_pontuacao = "doril_pos_pontuacao.json"
 nome_texto_pos_espacos_em_branco = "doril_pos_espacos_em_branco.json"
 nome_texto_pos_girias = "doril_pos_girias.json"
+nome_texto_pos_numeros_convertidos = "doril_pos_numeros_convertidos.json"
 
 # SIMBOLOS
 simbolos_html = r'<.*?>'
@@ -192,6 +194,27 @@ tokens_corrigidos = [girias.get(token, token) for token in conteudo]
 # ARQUIVO SEM GIRIAS
 with open(nome_texto_pos_girias, "w", encoding="utf-8") as arquivo:
     json.dump(tokens_corrigidos, arquivo, ensure_ascii=False, indent=4)
+    arquivo.close()
+    
+#############################################################################
+# ABRE ARQUIVO SEM GIRIAS
+with open(nome_texto_pos_girias, "r", encoding="utf-8") as arquivo:
+    conteudo = json.load(arquivo)
+    arquivo.close()
+
+# Converter números em palavras;
+tokens_convertidos = []
+
+for token in conteudo:
+    if token.isdigit():
+        numero = int(token)
+        palavra_numero = num2words(numero, lang='pt_BR')
+        tokens_convertidos.append(palavra_numero)
+    else:
+        tokens_convertidos.append(token)
+
+with open(nome_texto_pos_numeros_convertidos, "w", encoding="utf-8") as arquivo:
+    json.dump(tokens_convertidos, arquivo, ensure_ascii=False, indent=4)
     arquivo.close()
     
 #############################################################################
