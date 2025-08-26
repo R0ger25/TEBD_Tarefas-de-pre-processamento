@@ -21,19 +21,22 @@ simbolos_emoji = re.compile(
     flags=re.UNICODE
 )
 
+
+#############################################################################
 # ABRE ARQUIVO PRINCIPAL
 with open(nome_arquivo, "r", encoding="utf-8") as arquivo:
     conteudo = arquivo.read()
     arquivo.close()
 
 # Remover tags HTML;
-texto_pos_tags_html = re.sub(simbolos_html, '', conteudo)
+texto_sem_html = re.sub(simbolos_html, '', conteudo)
 
 # ARQUIVO SEM AS TAGS HTML
 with open(nome_texto_pos_tags_html, "w", encoding="utf-8") as arquivo:
-    arquivo.write(texto_pos_tags_html)
+    arquivo.write(texto_sem_html)
     arquivo.close()
 
+#############################################################################
 # ABRE ARQUIVO SEM AS TAGS HTML
 with open(nome_texto_pos_tags_html, "r", encoding="utf-8") as arquivo:
     conteudo = arquivo.read()
@@ -45,4 +48,18 @@ texto_sem_url = re.sub(simbolos_url, '', conteudo)
 # ARQUIVO SEM AS URLs
 with open(nome_texto_pos_urls, "w", encoding="utf-8") as arquivo:
     arquivo.write(texto_sem_url)
+    arquivo.close()
+    
+#############################################################################
+# ABRE ARQUIVO SEM AS URLs
+with open(nome_texto_pos_urls, "r", encoding="utf-8") as arquivo:
+    conteudo = arquivo.read()
+    arquivo.close()
+    
+# Remover emojis;
+texto_sem_emoji = simbolos_emoji.sub(r'', conteudo)
+
+# ARQUIVO SEM OS EMOJIS
+with open(nome_texto_pos_emoji, "w", encoding="utf-8") as arquivo:
+    arquivo.write(texto_sem_emoji)
     arquivo.close()
