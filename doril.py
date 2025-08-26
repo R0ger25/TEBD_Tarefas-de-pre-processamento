@@ -4,6 +4,9 @@ import json
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from num2words import num2words
+from spellchecker import SpellChecker
+
+corretor = SpellChecker(language='pt')
 
 # Baixar os pacotes necessários (só na primeira vez)
 # nltk.download('stopwords')
@@ -234,4 +237,16 @@ with open(nome_texto_pos_letras_minusculas, "w", encoding="utf-8") as arquivo:
     arquivo.close()
     
 #############################################################################
-# 
+# ABRE ARQUIVO COM LETRAS MINUSCULAS
+with open(nome_texto_pos_letras_minusculas, "r", encoding="utf-8") as arquivo:
+    conteudo = json.load(arquivo)
+    arquivo.close()
+
+# DEPENDE DO CECNÁRIO QUE VAI USAR. PARA A BULA NÃO É INDICADO, MAS PARA O JORNAL A TRIBUNA SIM.
+
+# # Aplicar correção ortográfica;
+# palavras_erradas = corretor.unknown(conteudo)
+
+# for palavra in palavras_erradas:
+#     sugestao = corretor.correction(palavra)
+#     print(f"Para '{palavra}', a sugestão é '{sugestao}'")
