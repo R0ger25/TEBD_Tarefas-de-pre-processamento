@@ -1,12 +1,15 @@
 import re
 import nltk
 import json
+import spacy
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from num2words import num2words
 from spellchecker import SpellChecker
 
 corretor = SpellChecker(language='pt')
+
+nlp = spacy.load('pt_core_news_sm')
 
 # Baixar os pacotes necessários (só na primeira vez)
 # nltk.download('stopwords')
@@ -24,6 +27,7 @@ nome_texto_pos_espacos_em_branco = "doril_pos_espacos_em_branco.json"
 nome_texto_pos_girias = "doril_pos_girias.json"
 nome_texto_pos_numeros_convertidos = "doril_pos_numeros_convertidos.json"
 nome_texto_pos_letras_minusculas = "doril_pos_letras_minusculas.json"
+nome_texto_pos_stemização_ou_lematização = "doril_pos_stemização_ou_lematização"
 
 # SIMBOLOS
 simbolos_html = r'<.*?>'
@@ -250,3 +254,16 @@ with open(nome_texto_pos_letras_minusculas, "r", encoding="utf-8") as arquivo:
 # for palavra in palavras_erradas:
 #     sugestao = corretor.correction(palavra)
 #     print(f"Para '{palavra}', a sugestão é '{sugestao}'")
+
+#############################################################################
+# Aplicar stemização | lematização
+
+texto = " ".join(conteudo)
+
+doc = nlp(texto)
+
+lemas = [token.lemma_ for token in doc]
+
+with open(nome_texto_pos_stemização_ou_lematização, "w", encoding="utf-8") as arquivo:
+    json.dump(lemas, arquivo, ensure_ascii=False, indent=4)
+    arquivo.close()
