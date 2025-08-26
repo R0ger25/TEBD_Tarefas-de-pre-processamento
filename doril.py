@@ -20,6 +20,7 @@ nome_texto_pos_pontuacao = "doril_pos_pontuacao.json"
 nome_texto_pos_espacos_em_branco = "doril_pos_espacos_em_branco.json"
 nome_texto_pos_girias = "doril_pos_girias.json"
 nome_texto_pos_numeros_convertidos = "doril_pos_numeros_convertidos.json"
+nome_texto_pos_letras_minusculas = "doril_pos_letras_minusculas.json"
 
 # SIMBOLOS
 simbolos_html = r'<.*?>'
@@ -213,8 +214,24 @@ for token in conteudo:
     else:
         tokens_convertidos.append(token)
 
+# ARQUIVO COM NUMEROS CONVERTIDOS
 with open(nome_texto_pos_numeros_convertidos, "w", encoding="utf-8") as arquivo:
     json.dump(tokens_convertidos, arquivo, ensure_ascii=False, indent=4)
     arquivo.close()
     
 #############################################################################
+# ABRE ARQUIVO COM NUMEROS CONVERTIDOS
+with open(nome_texto_pos_numeros_convertidos, "r", encoding="utf-8") as arquivo:
+    conteudo = json.load(arquivo)
+    arquivo.close()
+    
+# Converter todo o texto para letras minúsculas;
+tokens_minusculos = [token.lower() for token in conteudo]
+
+# ARQUIVO COM LETRAS MINUSCULAS
+with open(nome_texto_pos_letras_minusculas, "w", encoding="utf-8") as arquivo:
+    json.dump(tokens_minusculos, arquivo, ensure_ascii=False, indent=4)
+    arquivo.close()
+    
+#############################################################################
+# 
