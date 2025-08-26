@@ -16,6 +16,7 @@ nome_texto_pos_urls = "doril_pos_urls.txt"
 nome_texto_pos_emoji = "doril_pos_emoji.txt"
 nome_texto_pos_stopwords = "doril_pos_stopwords.json"
 nome_texto_pos_pontuacao = "doril_pos_pontuacao.json"
+nome_texto_pos_espacos_em_branco = "doril_pos_espacos_em_branco.json"
 
 # SIMBOLOS
 simbolos_html = r'<.*?>'
@@ -114,8 +115,20 @@ for token in conteudo:
 # ARQUIVO SEM AS PONTUAÇÕES
 with open(nome_texto_pos_pontuacao, "w", encoding="utf-8") as arquivo:
     json.dump(tokens_sem_pontuacao, arquivo, ensure_ascii=False, indent=4)
-    print(arquivo)
     arquivo.close()
     
 #############################################################################
 # ABRE ARQUIVO SEM AS PONTUAÇÕES E CARACTERES ESPECIAIS
+with open(nome_texto_pos_pontuacao, 'r', encoding='utf-8') as arquivo:
+    conteudo = json.load(arquivo)
+    arquivo.close()
+
+# Remover espaços em branco excedentes;
+tokens_sem_espacos = [token.strip() for token in conteudo]
+
+# ARQUIVO SEM ESPAÇOS EM BRANCO
+with open(nome_texto_pos_espacos_em_branco, "w", encoding="utf-8") as arquivo:
+    json.dump(tokens_sem_espacos, arquivo, ensure_ascii=False, indent=4)
+    arquivo.close()
+
+#############################################################################
