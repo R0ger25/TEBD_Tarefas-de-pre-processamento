@@ -15,6 +15,7 @@ nome_texto_pos_tags_html = "doril_pos_tags_html.txt"
 nome_texto_pos_urls = "doril_pos_urls.txt"
 nome_texto_pos_emoji = "doril_pos_emoji.txt"
 nome_texto_pos_stopwords = "doril_pos_stopwords.json"
+nome_texto_pos_pontuacao = "doril_pos_pontuacao.json"
 
 # SIMBOLOS
 simbolos_html = r'<.*?>'
@@ -30,6 +31,7 @@ simbolos_emoji = re.compile(
     "]+",
     flags=re.UNICODE
 )
+simbolos_pontuacao = r'[^a-zA-Z0-9\sàáâãéêíóôõúüçÀÁÂÃÉÊÍÓÔÕÚÜÇ]'
 
 
 #############################################################################
@@ -84,7 +86,9 @@ with open(nome_texto_pos_emoji, "r", encoding="utf-8") as arquivo:
 # Remover stopwords;
 lista_stopwords = stopwords.words('portuguese')
 tokens = word_tokenize(conteudo, language='portuguese')
+
 tokens_limpos = []
+
 for palavra in tokens:
     if palavra.lower() not in lista_stopwords:
         tokens_limpos.append(palavra)
@@ -95,3 +99,20 @@ with open(nome_texto_pos_stopwords, "w", encoding="utf-8") as arquivo:
     arquivo.close()
     
 #############################################################################
+# ABRE ARQUIVO SEM AS STOPWORDS
+with open(nome_texto_pos_stopwords, 'r', encoding='utf-8') as arquivo:
+    conteudo = json.load(arquivo)
+    arquivo.close()
+    
+tokens_sem_pontuacao = []
+
+for token in conteudo:
+    token = re.sub(simbolos_pontuacao, '', token)
+    if token:
+        tokens_sem_pontuacao.append(token)
+
+# ARQUIVO SEM OS PONTOS
+with open(nome_texto_pos_pontuacao, "w", encoding="utf-8") as arquivo:
+    json.dump(tokens_sem_pontuacao, arquivo, ensure_ascii=False, indent=4)
+    print(arquivo)
+    arquivo.close()
