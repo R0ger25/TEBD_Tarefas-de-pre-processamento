@@ -1,10 +1,20 @@
 import re
+import nltk
+import json
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+# Baixar os pacotes necessários (só na primeira vez)
+# nltk.download('stopwords')
+# nltk.download('punkt')
+# nltk.download('punkt_tab')
 
 # NOMES DOS ARQUIVOS
 nome_arquivo = "doril.txt"
 nome_texto_pos_tags_html = "doril_pos_tags_html.txt"
 nome_texto_pos_urls = "doril_pos_urls.txt"
 nome_texto_pos_emoji = "doril_pos_emoji.txt"
+nome_texto_pos_stopwords = "doril_pos_stopwords.json"
 
 # SIMBOLOS
 simbolos_html = r'<.*?>'
@@ -63,3 +73,25 @@ texto_sem_emoji = simbolos_emoji.sub(r'', conteudo)
 with open(nome_texto_pos_emoji, "w", encoding="utf-8") as arquivo:
     arquivo.write(texto_sem_emoji)
     arquivo.close()
+
+#############################################################################
+# ABRE ARQUIVO SEM OS EMOJIS
+
+with open(nome_texto_pos_emoji, "r", encoding="utf-8") as arquivo:
+    conteudo = arquivo.read()
+    arquivo.close()
+
+# Remover stopwords;
+lista_stopwords = stopwords.words('portuguese')
+tokens = word_tokenize(conteudo, language='portuguese')
+tokens_limpos = []
+for palavra in tokens:
+    if palavra.lower() not in lista_stopwords:
+        tokens_limpos.append(palavra)
+
+# ARQUIVO SEM AS STOPWORDS
+with open(nome_texto_pos_stopwords, "w", encoding="utf-8") as arquivo:
+    json.dump(tokens_limpos, arquivo, ensure_ascii=False, indent=4)
+    arquivo.close()
+    
+#############################################################################
